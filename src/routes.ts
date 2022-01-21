@@ -1,9 +1,13 @@
 import { Router } from 'express';
 import { SeasonController, EpisodeController } from './controllers';
+import ShowController from './controllers/ShowController';
 
 const routes = Router()
 
 const seasonController = new SeasonController()
+const showController = new ShowController()
+
+routes.get('/show', showController.getByTerm)
 
 routes.get('/season', seasonController.getAll)
 // routes.post('/season', seasonController.create)
