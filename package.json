@@ -9,6 +9,7 @@
     "build": "tsc && cp ormconfig.prod.json ./build/ormconfig.json && cp ./src/database/database.sqlite ./build/database/database.sqlite"
   },
   "dependencies": {
+    "axios": "^0.25.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "reflect-metadata": "^0.1.13",
