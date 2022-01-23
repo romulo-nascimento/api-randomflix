@@ -1,33 +1,33 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
-import { v4 as uuid } from 'uuid'
-import { Season } from './Season'
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { v4 as uuid } from 'uuid';
+import { Season } from './Season';
 
 @Entity('episodes')
 class Episode {
     @PrimaryColumn()
-    id: string
+      id: string;
 
     @JoinColumn({ name: 'season_id' })
     @ManyToOne(() => Season)
-    season: Season
+      season: Season;
 
     @Column({ name: 'season_id' })
-    seasonId: string
+      seasonId: string;
     
     @Column()
-    number: number
+      number: number;
 
     @Column()
-    title: string
+      title: string;
 
     @Column({ name: 'release_date' })
-    releaseDate: string
+      releaseDate: string;
 
     constructor() {
-        if (!this.id) {
-            this.id = uuid()
-        }
+      if (!this.id) {
+        this.id = uuid();
+      }
     }  
 }
 
-export { Episode }
+export { Episode };

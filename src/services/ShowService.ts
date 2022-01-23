@@ -1,38 +1,52 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
+import { Episode } from '../entities/Episode';
+import { Show } from '../type';
+import { getRandomElement } from '../utils/random';
 
-const defaultOptions: AxiosRequestConfig = {
-    method: 'GET',
-    url: 'https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup',
-    headers: {
-        'x-rapidapi-host': 'utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com',
-        'x-rapidapi-key': '4b2a7f5a5fmsh1c77735e557868dp1338b5jsn045093321f35'
-    }
-};
+const tvmaze = axios.create({
+  baseURL: 'https://api.tvmaze.com',
+});
 
 class ShowService {
-    async getByTerm(term: string, country: string) {
-        var requestOptions = {
-            ...defaultOptions,
-            params: { term, country }
+  async getByTerm(term: string) {
+    try {
+      const { data: results = [] } = await tvmaze.get(`/search/shows?q=${term}`);
+      const shows = results.map(({ show }) => {
+        const { id, name: title, image, genres = [], externals = {} } = show;
+
+        return {
+          id,
+          title,
+          image,
+          genres,
+          imdb: externals?.imdb
         };
+      }).filter(({ image }) => image);
 
-        try {
-            const { data: { results = [] } } = await axios.request(requestOptions);
-            const shows = results.map(show => {
-                const { name, picture, external_ids: { imdb } } = show;
-
-                return {
-                    name,
-                    pictureSrc: picture,
-                    imdbId: imdb?.id
-                };
-            }).filter(({ imdbId }) => imdbId)
-
-            return shows;
-        } catch (error) {
-            throw new Error(error.message);
-        }
+      return shows;
+    } catch (error) {
+      throw new Error(error.message);
     }
+  }
+
+  async getRandomShowEpisode(showIds: string[]) {
+    const selectedShowId = getRandomElement(showIds);
+
+    const [showData, episodesData] = await Promise.all([
+      tvmaze.get<Show>(`/shows/${selectedShowId}`),
+      tvmaze.get<Episode[]>(`/shows/${selectedShowId}/episodes`)
+    ]);
+
+    const { data: { name: showTitle } } = showData;
+    const { data: showEpisodes } = episodesData;
+
+    const selectedEpisode = getRandomElement(showEpisodes);
+
+    return {
+      ...selectedEpisode,
+      showTitle
+    };
+  }
 }
 
-export default ShowService
+export default ShowService;

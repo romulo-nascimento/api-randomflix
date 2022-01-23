@@ -1,34 +1,34 @@
-import { getCustomRepository, Repository } from 'typeorm'
-import { Season } from '../entities/Season'
+import { getCustomRepository, Repository } from 'typeorm';
+import { Season } from '../entities/Season';
 
-import { SeasonRepository } from '../repositories/SeasonRepository'
+import { SeasonRepository } from '../repositories/SeasonRepository';
 
 class SeasonService {
-    private seasonRepository: Repository<Season>
+  private seasonRepository: Repository<Season>;
 
-    constructor() {
-        this.seasonRepository = getCustomRepository(SeasonRepository)
-    }
+  constructor() {
+    this.seasonRepository = getCustomRepository(SeasonRepository);
+  }
 
-    async getAll() {
-        const seasons = this.seasonRepository.find()
+  async getAll() {
+    const seasons = this.seasonRepository.find();
 
-        return seasons
-    }
+    return seasons;
+  }
 
-    async getById(id: string) {
-        const season = this.seasonRepository.findOne({ id })
+  async getById(id: string) {
+    const season = this.seasonRepository.findOne({ id });
 
-        return season
-    }
+    return season;
+  }
     
-    async create(title: string) {
-        const season = this.seasonRepository.create({title})
+  async create(title: string) {
+    const season = this.seasonRepository.create({title});
 
-        await this.seasonRepository.save(season)
+    await this.seasonRepository.save(season);
 
-        return season
-    }
+    return season;
+  }
 }
 
-export { SeasonService }
+export { SeasonService };
