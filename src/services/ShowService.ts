@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Episode } from '../entities/Episode';
-import { Show } from '../type';
+
+import { Episode, Show } from '../types';
 import { getRandomElement } from '../utils/random';
 
 const tvmaze = axios.create({

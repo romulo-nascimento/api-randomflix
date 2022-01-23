@@ -1,7 +1,5 @@
-import { SeasonController } from './SeasonController';
-import { EpisodeController } from './EpisodeController';
+import ShowController from './ShowController';
 
 export {
-  SeasonController,
-  EpisodeController
+  ShowController
 };

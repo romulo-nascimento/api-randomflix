@@ -23,7 +23,3 @@ export interface Episode {
     image: ShowImage
     summary: string
 }
-
-export interface RandomEpisodeResponse extends Episode {
-    show: Show
-}
