@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { Episode, Show } from '../types';
+import { removeHtmlTags } from '../utils/html';
 import { getRandomElement } from '../utils/random';
 
 const tvmaze = axios.create({
@@ -44,6 +45,7 @@ class ShowService {
 
     return {
       ...selectedEpisode,
+      summary: removeHtmlTags(selectedEpisode.summary),
       showTitle
     };
   }
